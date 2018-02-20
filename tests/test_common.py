@@ -13,7 +13,7 @@ class TestPrimitiveBuilder(unittest.TestCase):
           primitives.StringBuilder)
     def test_default_args(self, builder):
         """FloatBuilder should set default values as in OpenAPI spec."""
-        field = builder.build({})
+        field = builder.build_schema({})
         self.assertEqual(False, field.allow_none)
         self.assertEqual(False, field.required)
         self.assertIsNone(field.validate)
@@ -24,7 +24,7 @@ class TestPrimitiveBuilder(unittest.TestCase):
     def test_nullable(self, builder):
         """Building a Float field should respect nullable settings."""
         for nullable in (True, False):
-            field = builder.build({'nullable': nullable})
+            field = builder.build_schema({'nullable': nullable})
             self.assertEqual(nullable, field.allow_none)
 
     @data(primitives.FloatBuilder,
@@ -33,5 +33,5 @@ class TestPrimitiveBuilder(unittest.TestCase):
     def test_required(self, builder):
         """Building a Float field should respect required settings."""
         for required in (True, False):
-            field = builder.build({'required': required})
+            field = builder.build_schema({'required': required})
             self.assertEqual(required, field.required)

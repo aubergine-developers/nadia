@@ -10,14 +10,9 @@ class PrimitiveBuilder(Builder):
     marshmallow_class = None
 
     @classmethod
-    def build(cls, spec_dict):
+    def build_schema(cls, spec_dict):
         """Build a field using given dict read from OpenAPI specification."""
         return cls.marshmallow_class(**cls.translate_args(spec_dict))
-
-    @classmethod
-    def build_array(cls, spec_dict, _builder_factory):
-        return fields.List(cls.marshmallow_class, **cls.translate_args(spec_dict))
-
 
 class FloatBuilder(PrimitiveBuilder):
     """Float field builder."""

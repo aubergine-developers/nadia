@@ -9,5 +9,5 @@ class TestFloatBulder(unittest.TestCase):
 
     def test_correct_type(self):
         """Building a Float field return marshmallow.fields.Float."""
-        field = primitives.FloatBuilder.build({})
+        field = primitives.FloatBuilder.build_schema({})
         self.assertEqual(fields.Float, type(field))
