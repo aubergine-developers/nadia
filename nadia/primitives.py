@@ -1,5 +1,4 @@
 """Schema generators for primitive types."""
-from abc import ABC, abstractmethod
 from marshmallow import fields
 from nadia.common import Builder
 
