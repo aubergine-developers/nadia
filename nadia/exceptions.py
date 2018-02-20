@@ -13,4 +13,4 @@ class UnknownTypeException(Exception):
         self.typename = typename
 
     def __str__(self):
-        return 'Unknown data type: {}'.format(typename)
+        return 'Unknown data type: {}'.format(self.typename)
