@@ -23,6 +23,7 @@ class ObjectBuilder(Builder):
             attr_schemas[prop_name] = attr_schemas_builder.build_schema(prop_content)
         return attr_schemas
 
-    def create_schema_type(self, attrs):
+    @staticmethod
+    def create_schema_type(attrs):
         """Create schema type from given dictionary of attributes."""
         return type('Object' + str(uuid4()), (marshmallow.Schema,), attrs)
