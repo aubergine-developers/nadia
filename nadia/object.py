@@ -10,17 +10,19 @@ class ObjectBuilder(Builder):
 
     def build_schema(self, spec_dict):
         """Build validator for custom object datatype."""
-        obj_schema = type(
-            name='Object' + uuid4(),
-            basis=[marshmallow.Schema],
-            dict=self.construct_attributes_validators(spec_dict['properties']))
+        attrs = self.construct_attributes_schemas(spec_dict['properties'])
+        obj_schema = self.create_schema_type(attrs)
         return fields.Nested(obj_schema, **self.translate_args(spec_dict))
 
-    def construct_attributes_validators(self, properties):
-        """Construct dictionary of validators corresponding to object properties dict."""
-        attr_validators = {}
+    def construct_attributes_schemas(self, properties):
+        """Construct dictionary of schemas corresponding to object properties dict."""
+        attr_schemas = {}
         for prop_name, prop_content in properties.items():
             attr_type = prop_content['type']
-            attr_validator_builder = self.builder_provider.get_builder(attr_type)
-            attr_validators[prop_name] = attr_validator_builder.build_validator(prop_content)
-        return attr_validators
+            attr_schemas_builder = self.builder_provider.get_builder(attr_type)
+            attr_schemas[prop_name] = attr_schemas_builder.build_schema(prop_content)
+        return attr_schemas
+
+    def create_schema_type(self, attrs):
+        """Create schema type from given dictionary of attributes."""
+        return type('Object' + str(uuid4()), (marshmallow.Schema,), attrs)
