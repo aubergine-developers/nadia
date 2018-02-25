@@ -1,5 +1,6 @@
 # nadia: create marshmallow Schemas OpenAPI 3 objects.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/aubergine-developers/nadia.svg?branch=master)](https://travis-ci.org/aubergine-developers/nadia)
 [![Documentation Status](https://readthedocs.org/projects/nadia/badge/?version=latest)](http://nadia.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/aubergine-developers/nadia/branch/master/graph/badge.svg)](https://codecov.io/gh/aubergine-developers/nadia)  
