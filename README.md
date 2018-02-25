@@ -1,4 +1,4 @@
-# nadia: simplified marshmallow Schemas creation for OpenAPI 3 objects.
+# nadia: create marshmallow Schemas OpenAPI 3 objects.
 
 **nadia** is a small and lightweight library for creating marshmallow Schemas from schemas defined in your OpenAPI spec.
 
