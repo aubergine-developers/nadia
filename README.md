@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/aubergine-developers/nadia.svg?branch=master)](https://travis-ci.org/aubergine-developers/nadia)
 [![Documentation Status](https://readthedocs.org/projects/nadia/badge/?version=latest)](http://nadia.readthedocs.io/en/latest/?badge=latest)
-  
+[![codecov](https://codecov.io/gh/aubergine-developers/nadia/branch/master/graph/badge.svg)](https://codecov.io/gh/aubergine-developers/nadia)  
 
 **nadia** is a small and lightweight library for creating marshmallow Schemas from schemas defined in your OpenAPI spec.
 
