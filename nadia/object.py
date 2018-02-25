@@ -1,7 +1,7 @@
 """Implementation of validation builder for object type."""
 from uuid import uuid4
-import marshmallow
 from marshmallow import fields
+from nadia.schema import NadiaSchema
 from nadia.common import Builder
 
 
@@ -26,4 +26,4 @@ class ObjectBuilder(Builder):
     @staticmethod
     def create_schema_type(attrs):
         """Create schema type from given dictionary of attributes."""
-        return type('Object' + str(uuid4()), (marshmallow.Schema,), attrs)
+        return type('Object' + str(uuid4()), (NadiaSchema,), attrs)
