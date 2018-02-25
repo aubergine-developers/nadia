@@ -1,5 +1,7 @@
 # nadia: create marshmallow Schemas OpenAPI 3 objects.
 
+[![Build Status](https://travis-ci.org/aubergine-developers/nadia.svg?branch=master)](https://travis-ci.org/aubergine-developers/nadia)
+
 **nadia** is a small and lightweight library for creating marshmallow Schemas from schemas defined in your OpenAPI spec.
 
 ## Basic usage
