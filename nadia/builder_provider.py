@@ -1,6 +1,9 @@
 """Builder provider that should be injected to builder classes."""
 import logging
 from functools import lru_cache
+from nadia.array import ArrayBuilder
+from nadia.object import ObjectBuilder
+from nadia.primitives import FloatBuilder, IntegerBuilder, StringBuilder
 from nadia.exceptions import UnknownTypeException
 
 
@@ -22,3 +25,12 @@ class BuilderProvider(object):
     def logger(self):
         """Logger used by this BuilderProvider."""
         return logging.getLogger('BuilderProvider')
+
+    @staticmethod
+    def get_default():
+        return BuilderProvider({
+            'number': FloatBuilder,
+            'integer': IntegerBuilder,
+            'string': StringBuilder,
+            'object': ObjectBuilder,
+            'array': ArrayBuilder})
