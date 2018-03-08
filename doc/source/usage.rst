@@ -1,20 +1,17 @@
 Basic usage
 ===========
 
-We will ilustrate nadia's usage on the usual `OpenAPI petstore example <https://github.com/OAI/OpenAPI-Specification/blob/master/examples/v3.0/petstore.yaml>`_. Assuming you have the file save in your current directory, the following snippet should:
-1. Load the speficication.
-2. Create schema builder.
-3. Build schema for Pet object.
-4. Validate two sample objects using the given schema.
+nadia's usage is as simple as it gets. Suppose you have standard
+`OpenAPI petstore example <https://github.com/OAI/OpenAPI-Specification/blob/master/examples/v3.0/petstore.yaml>`_ yaml saved in your current directory. Below short snippet will create Schema for the pet object and use it to validate two example objects.
 
 .. code-block:: python
 
    import yaml
    import nadia.api
 
-   with open('petstore.yaml') as petstore:        
+   with open('petstore.yaml') as petstore:
        data = yaml.load(petstore)
-    
+
    builder = nadia.api.SchemaBuilder.create()
    schema = builder.build(data['components']['schemas']['Pet'])
 
