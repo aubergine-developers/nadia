@@ -9,23 +9,38 @@ class PrimitiveBuilder(Builder):
     marshmallow_class = None
 
     @classmethod
-    def build_schema(cls, spec_dict):
-        """Build a field using given dict read from OpenAPI specification."""
-        return cls.marshmallow_class(**cls.translate_args(spec_dict))
+    def build_schema(cls, spec):
+        """Build a Field for a primitive object.
+
+        .. seealso: :py:meth:`nadia.common.Builder.build_schema`
+
+        .. note :: Conforming to the base class documentation, this method returns
+           instances of :py:class:`marshmallow.Field`.
+        """
+        return cls.marshmallow_class(**cls.translate_args(spec))
 
 class FloatBuilder(PrimitiveBuilder):
-    """Float field builder."""
+    """Float schema builder.
+
+    This builder is designed for constructing schemas for OpenAPI `number` type.
+    """
     key = 'number'
     marshmallow_class = fields.Float
 
 
 class IntegerBuilder(PrimitiveBuilder):
-    """Integer field builder."""
+    """Integer schema builder.
+
+    This bulder is designed for constructing schemas for OpenAPI 'integer' type.
+    """
     key = 'integer'
     marshmallow_class = fields.Integer
 
 
 class StringBuilder(PrimitiveBuilder):
-    """Str field builder."""
+    """Str schema builder.
+
+    Thsi builder is designed for constructing schemas for OpenAPI 'string' type.
+    """
     key = 'string'
     marshmallow_class = fields.String

@@ -6,7 +6,7 @@ class NadiaSchema(Schema):
     """Base marshmallow schema used by Nadia."""
 
     @validates_schema(pass_original=True)
-    def check_unknown_fields(self, data, original_data):
+    def check_unknown_fields(self, _data, original_data):
         """Validator raising ValidationError if extra keys are provided.
 
         This validator is taken from the the official recipe located at:
