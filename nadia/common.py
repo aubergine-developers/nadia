@@ -1,10 +1,13 @@
-"""Common functionallities related to all builders."""
+"""Functionallities related to all builders."""
 from abc import ABC, abstractmethod
 
 
 class Builder(ABC):
-    """Base class for all field builders."""
+    """Base class for all field builders.
 
+    :param builder_provider: a provider used for obtaining builders for other OpenAPI types.
+    :type bulder_provider: a subclass of :py:class:`nadia.builder_provider.BuilderProvider`
+    """
     key = None
     marshmallow_class = None
 
@@ -12,14 +15,31 @@ class Builder(ABC):
         self.builder_provider = builder_provider
 
     @classmethod
-    def translate_args(cls, spec_dict):
-        """Translate."""
+    def translate_args(cls, spec):
+        """Translate arguments given in OpenAPI spec to keyword arguments for marshmallow classes.
+
+        :param spec: a dictionary extracted from OpenAPI spec containing definition of some
+         object.
+        :type spec: dict
+        :return: A mapping containing keyword arguments used for constructing marshmalow objects.
+        :rtype: dict
+        """
         return {
-            'allow_none': spec_dict.get('nullable', False),
-            'required': spec_dict.get('required', False)
+            'allow_none': spec.get('nullable', False),
+            'required': spec.get('required', False)
         }
 
     @abstractmethod
-    def build_schema(self, spec_dict):
-        """Build marshmallow schema fromschema dictionary extracted from OpenAPI specs."""
+    def build_schema(self, spec):
+        """Build marshmallow schema from  definition extracted from OpenAPI specs.
+
+        :param spec: an object definition extracted from OpenAPI specification.
+        :return: Schema or a Field constructed from the spec dictionary.
+        :rtype: :py:class:`marshmallow.Schema` or :py:class:marshmallow.Field
+
+        .. note:: The return type as well as the nature of the object constructed depends
+           on the concrete implementation of Builder. Usually the builder designed for
+           handling object types will return Schema object, while builders designed for handling
+           other data types will return Field instances.
+        """
         pass

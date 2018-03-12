@@ -1,4 +1,4 @@
-"""Module with common Exceptions."""
+"""Common Exceptions."""
 
 
 class UnknownTypeException(Exception):
@@ -6,8 +6,10 @@ class UnknownTypeException(Exception):
 
     Note that circumstances under which this Exception is raised should not
     happend when the schema dict passed was created from valid OpenAPI specification.
-    """
 
+    :param typename: name of type that resulted in raising exception.
+    :type typename: str
+    """
     def __init__(self, typename):
         super(UnknownTypeException, self).__init__(typename)
         self.typename = typename
