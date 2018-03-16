@@ -14,8 +14,8 @@ class Builder(ABC):
     def __init__(self, builder_provider):
         self.builder_provider = builder_provider
 
-    @classmethod
-    def translate_args(cls, spec):
+    @staticmethod
+    def translate_args(spec):
         """Translate arguments given in OpenAPI spec to keyword arguments for marshmallow classes.
 
         :param spec: a dictionary extracted from OpenAPI spec containing definition of some
