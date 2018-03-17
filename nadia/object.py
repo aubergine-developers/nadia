@@ -30,13 +30,13 @@ class ObjectBuilder(Builder):
         :return: a mapping property-name -> Schema or Field.
         :rtype: dict
         """
-        properties = spec["properties"]
+        properties = spec['properties']
         attr_schemas = {}
         for prop_name, prop_content in properties.items():
             attr_type = prop_content['type']
             attr_schemas_builder = self.builder_provider.get_builder(attr_type)
-            attr_required = prop_name in spec.get("required", [])
-            prop_content["required"] = attr_required
+            attr_required = prop_name in spec.get('required', [])
+            prop_content['required'] = attr_required
             attr_schemas[prop_name] = attr_schemas_builder.build_schema(prop_content)
         return attr_schemas
 
