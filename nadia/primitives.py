@@ -31,7 +31,7 @@ class FloatBuilder(PrimitiveBuilder):
 class IntegerBuilder(PrimitiveBuilder):
     """Integer schema builder.
 
-    This bulder is designed for constructing schemas for OpenAPI 'integer' type.
+    This builder is designed for constructing schemas for OpenAPI 'integer' type.
     """
     key = 'integer'
     marshmallow_class = fields.Integer
@@ -40,7 +40,7 @@ class IntegerBuilder(PrimitiveBuilder):
 class StringBuilder(PrimitiveBuilder):
     """Str schema builder.
 
-    Thsi builder is designed for constructing schemas for OpenAPI 'string' type.
+    This builder is designed for constructing schemas for OpenAPI 'string' type.
     """
     key = 'string'
     marshmallow_class = fields.String

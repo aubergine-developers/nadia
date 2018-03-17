@@ -1,4 +1,4 @@
-"""Functionallities related to building schemas for array type."""
+"""Functionalities related to building schemas for array type."""
 from marshmallow import fields
 from nadia.common import Builder
 
