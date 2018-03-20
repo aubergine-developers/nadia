@@ -50,9 +50,8 @@ class TestObjectBuilder(unittest.TestCase):
         """Building schema for object type should correctly use required field."""
         obj_def = {'type': 'object', 'properties': self.properties}
         builder = ObjectBuilder(self.provider)
-        for required in ([], self.required):
-            obj_def['required'] = required
-            self.assertEqual(required, builder.build_schema(obj_def).required)
+        for required in (True, False):
+            self.assertEqual(required, builder.build_schema(obj_def, required=required).required)
 
     def test_properties_building(self):
         """Constructing nested objects attributes should correctly call provided schema builders."""

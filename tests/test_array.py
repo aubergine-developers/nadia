@@ -44,6 +44,5 @@ class TestArrayBuilder(unittest.TestCase):
         arr_def = {'type': 'array', 'items': {'type': 'number'}}
         builder = ArrayBuilder(provider)
         for required in (True, False):
-            arr_def['required'] = required
-            schema = builder.build_schema(arr_def)
+            schema = builder.build_schema(arr_def, required=required)
             self.assertEqual(required, schema.required)
