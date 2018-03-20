@@ -8,7 +8,7 @@ from nadia.common import Builder
 class ObjectBuilder(Builder):
     """Schema builder for object datatype."""
 
-    def build_schema(self, spec):
+    def build_schema(self, spec, **kwargs):
         """Build Schema from a definition of OpenAPI object.
 
         :param spec: a mapping containing object definition extracted from OpenAPI spec.
@@ -18,7 +18,7 @@ class ObjectBuilder(Builder):
         """
         attrs = self.construct_attributes_schemas(spec)
         obj_schema = self.create_schema_type(attrs)
-        return fields.Nested(obj_schema, **self.translate_args(spec))
+        return fields.Nested(obj_schema, **self.translate_args(spec, **kwargs))
 
     def construct_attributes_schemas(self, spec):
         """Construct Schemas corresponding to object definition.
@@ -36,8 +36,7 @@ class ObjectBuilder(Builder):
             attr_type = prop_content['type']
             attr_schemas_builder = self.builder_provider.get_builder(attr_type)
             attr_required = prop_name in spec.get('required', [])
-            prop_content['required'] = attr_required
-            attr_schemas[prop_name] = attr_schemas_builder.build_schema(prop_content)
+            attr_schemas[prop_name] = attr_schemas_builder.build_schema(prop_content, required=attr_required)
         return attr_schemas
 
     @staticmethod

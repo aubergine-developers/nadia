@@ -15,7 +15,7 @@ class Builder(ABC):
         self.builder_provider = builder_provider
 
     @staticmethod
-    def translate_args(spec):
+    def translate_args(spec, **kwargs):
         """Translate arguments given in OpenAPI spec to keyword arguments for marshmallow classes.
 
         :param spec: a dictionary extracted from OpenAPI spec containing definition of some
@@ -27,11 +27,11 @@ class Builder(ABC):
         
         return {
             'allow_none': spec.get('nullable', False),
-            'required': spec.get('required', False)
+            'required': kwargs.get('required', False)
         }
 
     @abstractmethod
-    def build_schema(self, spec):
+    def build_schema(self, spec, **kwargs):
         """Build marshmallow schema from definition extracted from OpenAPI specs.
 
         :param spec: an object definition extracted from OpenAPI specification.

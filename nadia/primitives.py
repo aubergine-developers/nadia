@@ -9,7 +9,7 @@ class PrimitiveBuilder(Builder):
     marshmallow_class = None
 
     @classmethod
-    def build_schema(cls, spec):
+    def build_schema(cls, spec, **kwargs):
         """Build a Field for a primitive object.
 
         .. seealso: :py:meth:`nadia.common.Builder.build_schema`
@@ -17,7 +17,7 @@ class PrimitiveBuilder(Builder):
         .. note :: Conforming to the base class documentation, this method returns
            instances of :py:class:`marshmallow.Field`.
         """
-        return cls.marshmallow_class(**cls.translate_args(spec))
+        return cls.marshmallow_class(**cls.translate_args(spec, **kwargs))
 
 class FloatBuilder(PrimitiveBuilder):
     """Float schema builder.
