@@ -33,5 +33,5 @@ class TestPrimitiveBuilder(unittest.TestCase):
     def test_required(self, builder):
         """Building a Float field should respect required settings."""
         for required in (True, False):
-            field = builder.build_schema({'required': required})
+            field = builder.build_schema({}, required=required)
             self.assertEqual(required, field.required)

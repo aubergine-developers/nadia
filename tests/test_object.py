@@ -15,6 +15,7 @@ class TestObjectBuilder(unittest.TestCase):
 
     provider = None
     properties = None
+    required = None
 
     def setUp(self):
         number_mock = mock.Mock()
@@ -28,6 +29,7 @@ class TestObjectBuilder(unittest.TestCase):
         self.properties = {'x': {'type': 'number'},
                            'y': {'type': 'integer'},
                            'name': {'type': 'string'}}
+        self.required = ['x', 'y']
 
     def test_return_type(self):
         """Building schema with ObjectBuilder should return marshmallow.fields.Nested instance."""
@@ -49,13 +51,13 @@ class TestObjectBuilder(unittest.TestCase):
         obj_def = {'type': 'object', 'properties': self.properties}
         builder = ObjectBuilder(self.provider)
         for required in (True, False):
-            obj_def['required'] = required
-            self.assertEqual(required, builder.build_schema(obj_def).required)
+            self.assertEqual(required, builder.build_schema(obj_def, required=required).required)
 
     def test_properties_building(self):
         """Constructing nested objects attributes should correctly call provided schema builders."""
+        obj_def = {'type': 'object', 'properties': self.properties}
         builder = ObjectBuilder(self.provider)
-        props_schemas = builder.construct_attributes_schemas(self.properties)
+        props_schemas = builder.construct_attributes_schemas(obj_def)
         for prop_name, prop in self.properties.items():
             prop_builder = self.provider.get_builder(prop['type'])
             prop_builder.build_schema.assert_called_once()
@@ -69,6 +71,6 @@ class TestObjectBuilder(unittest.TestCase):
         obj_def = {'type': 'object', 'properties': self.properties}
         builder = ObjectBuilder(self.provider)
         schema = builder.build_schema(obj_def)
-        cas.assert_called_once_with(obj_def['properties'])
+        cas.assert_called_once_with(obj_def)
         cst.assert_called_once_with(cas.return_value)
         nested.assert_called_once_with(cst.return_value, allow_none=False, required=False)

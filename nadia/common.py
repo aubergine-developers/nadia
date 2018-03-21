@@ -1,4 +1,4 @@
-"""Functionallities related to all builders."""
+"""Functionalities related to all builders."""
 from abc import ABC, abstractmethod
 
 
@@ -14,24 +14,25 @@ class Builder(ABC):
     def __init__(self, builder_provider):
         self.builder_provider = builder_provider
 
-    @classmethod
-    def translate_args(cls, spec):
+    @staticmethod
+    def translate_args(spec, **kwargs):
         """Translate arguments given in OpenAPI spec to keyword arguments for marshmallow classes.
 
         :param spec: a dictionary extracted from OpenAPI spec containing definition of some
          object.
         :type spec: dict
-        :return: A mapping containing keyword arguments used for constructing marshmalow objects.
+        :return: A mapping containing keyword arguments used for constructing marshmallow objects.
         :rtype: dict
         """
+        
         return {
             'allow_none': spec.get('nullable', False),
-            'required': spec.get('required', False)
+            'required': kwargs.get('required', False)
         }
 
     @abstractmethod
-    def build_schema(self, spec):
-        """Build marshmallow schema from  definition extracted from OpenAPI specs.
+    def build_schema(self, spec, **kwargs):
+        """Build marshmallow schema from definition extracted from OpenAPI specs.
 
         :param spec: an object definition extracted from OpenAPI specification.
         :return: Schema or a Field constructed from the spec dictionary.
