@@ -1,0 +1,17 @@
+language: python
+python:
+  - "3.6"
+install:
+  - pip install .
+  - pip install codecov
+script:
+  - coverage run setup.py test
+after_success:
+  - codecov
+deploy:
+  provider: pypi
+  user: dexter2206
+  password:
+    secure: "Ju/tJSM11Uu+dtv8yN9lIfOoZAZsyIHLo0SzSwDliaFZo1RAlASd1JcP2z8tcq11m+kPwddt184GFDBiOOb5v4P7U7Pnrq558lJk5ei9e5pdOXeNGv9EtDfY4BswQvj+Q1FBGRGUEi/21DOr0Kpi3rjaqAHgpFNw/Ydo0Qesg0I7i477nNEzQArQxzFY+MVcqvDiDVcTo9NgDBMa8Rp6zQmuj3oKtKLQwvMYxxi4O6OBcUrd32XeXI+pRzuQD/KTQkDOTLtyLnGPFNbjoMVYUHC5G/fy/em01LERnIbHEZlKCQuJsSDO5LSN+Q2pMveUnQy+mhmi1J5K0HPzrw5GtWmTDyT59TUoqKrZ5iIT1nOaxrG0uDjvtOccM3Q1/WNBNn9bl8YTuXIfCDMTDFKTv0ZnAklRrCWxw5fGH9hSPhwidxtvAQjUo1Th+j6M+HRNCvZYTa4Zl45M8OuOrz4D0SK8/MZG6b5IZKPT1pfix2iqHj+je1t+4zjDjhq2jilxXbTvmjzxyd8lVGsopw3zu7mniE6ZCP57D6HlwNCT3p4r+IsM1yiUU2Nam3K6jKVv0aDN9dp3UE4y7OMXgFWeb+UjfTJ8xFJwIlhelt10nSAacPyPRT2E88XoabD0X8KtfG47C2MCg81LkL9hmVzPE6e/B0Ei3SeYds8Ca03W8Bw="
+  on:
+    tags: true
