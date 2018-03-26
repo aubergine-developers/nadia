@@ -15,6 +15,7 @@ with open('README.md') as readme:
 
 setup(
     name='nadia',
+    license='MIT',
     description=__doc__,
     use_scm_version=True,
     long_description=LONG_DESCRIPTION,
