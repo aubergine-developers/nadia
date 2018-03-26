@@ -34,7 +34,7 @@ setup(
     platforms=["Linux", "Unix"],
     install_requires=['marshmallow', 'pyaml'],
     tests_require=['marshmallow', 'pyaml', 'ddt'],
-    author='Konrad Jałowiecki',
+    author='Konrad Jałowiecki, Magdalena Nowak',
     author_email='dexter2206@gmail.com',
     packages=find_packages(exclude=["tests", "tests.*"]),
     keywords='openapi schema validation'
