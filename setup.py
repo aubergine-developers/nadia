@@ -10,16 +10,8 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3.6',
     'Topic :: Software Development']
 
-LONG_DESCRIPTION = """Nadia is an automatic generator of marshmallow Schemas for your OpenAPI 3 schemas.
-
-Currently Nadia supports schemas with the following types:
-
-- integer, number
-- string
-- array
-- object (including nested ones)
-
-The required and nullable settings are also supported."""
+with open('README.md') as readme:
+    LONG_DESCRIPTION = readme.read()
 
 setup(
     name='nadia',
