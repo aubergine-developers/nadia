@@ -10,11 +10,6 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3.6',
     'Topic :: Software Development']
 
-MAJOR = 0
-MINOR = 1
-MICRO = 0
-VERSION = '{}.{}.{}'.format(MAJOR, MINOR, MICRO)
-
 LONG_DESCRIPTION = """Nadia is an automatic generator of marshmallow Schemas for your OpenAPI 3 schemas.
 
 Currently Nadia supports schemas with the following types:
@@ -28,10 +23,11 @@ The required and nullable settings are also supported."""
 
 setup(
     name='nadia',
-    version=VERSION,
     description=__doc__,
+    use_scm_version=True,
     long_description=LONG_DESCRIPTION,
     platforms=["Linux", "Unix"],
+    setup_requires=['setuptools_scm'],
     install_requires=['marshmallow', 'pyaml'],
     tests_require=['marshmallow', 'pyaml', 'ddt'],
     author='Konrad Jałowiecki <dexter2206@gmail.com>, Magdalena Nowak',
