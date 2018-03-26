@@ -18,6 +18,7 @@ setup(
     description=__doc__,
     use_scm_version=True,
     long_description=LONG_DESCRIPTION,
+    long_description_content_type='text/markdown',
     platforms=["Linux", "Unix"],
     setup_requires=['setuptools_scm'],
     install_requires=['marshmallow', 'pyaml'],
