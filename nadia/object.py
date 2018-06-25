@@ -36,7 +36,10 @@ class ObjectBuilder(Builder):
             attr_type = prop_content['type']
             attr_schemas_builder = self.builder_provider.get_builder(attr_type)
             attr_required = prop_name in spec.get('required', [])
-            attr_schemas[prop_name] = attr_schemas_builder.build_schema(prop_content, required=attr_required)
+            attr_schemas[prop_name] = attr_schemas_builder.build_schema(
+                prop_content,
+                required=attr_required,
+                nullable=prop_content.get('nullable', False))
         return attr_schemas
 
     @staticmethod

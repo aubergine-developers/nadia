@@ -24,9 +24,8 @@ class Builder(ABC):
         :return: A mapping containing keyword arguments used for constructing marshmallow objects.
         :rtype: dict
         """
-        
         return {
-            'allow_none': spec.get('nullable', False),
+            'allow_none': kwargs.get('nullable', False),
             'required': kwargs.get('required', False)
         }
 
