@@ -25,7 +25,7 @@ class Builder(ABC):
         :rtype: dict
         """
         return {
-            'allow_none': kwargs.get('nullable', False),
+            'allow_none': spec.get('nullable', False),
             'required': kwargs.get('required', False)
         }
 

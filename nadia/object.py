@@ -38,8 +38,7 @@ class ObjectBuilder(Builder):
             attr_required = prop_name in spec.get('required', [])
             attr_schemas[prop_name] = attr_schemas_builder.build_schema(
                 prop_content,
-                required=attr_required,
-                nullable=prop_content.get('nullable', False))
+                required=attr_required)
         return attr_schemas
 
     @staticmethod
