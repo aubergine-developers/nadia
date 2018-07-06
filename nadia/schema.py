@@ -15,3 +15,16 @@ class NadiaSchema(Schema):
         unknown = set(original_data) - set(self.fields)
         if unknown:
             raise ValidationError('Unknown field', unknown)
+
+
+class NadiaCombinedSchema(object):
+    """Class used to process combined schemas, using anyOf, allOf and oneOf."""
+
+    @classmethod
+    def validate(cls, data):
+        """Validate a combination of schemas."""
+        validation_results = {}
+        for name, schema in cls.content.items():
+            validation_results[name] = schema.validate(data)
+
+        return validation_results
