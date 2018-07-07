@@ -27,4 +27,20 @@ class NadiaCombinedSchema(object):
         for name, schema in cls.content.items():
             validation_results[name] = schema.validate(data)
 
-        return validation_results
+        valid_count = cls.get_valid_count(validation_results)
+
+        if cls.combination == "anyOf" and valid_count > 0:
+            return {}
+        elif cls.combination == "oneOf" and valid_count == 1:
+            return {}
+        elif cls.combination == "allOf" and valid_count == len(cls.content):
+            return {}
+        else:
+            return {'content': validation_results}
+
+    @staticmethod
+    def get_valid_count(val_results):
+        """Check how many validated schemas are valid."""
+        results = [result == {} for result in val_results.values()]
+        return sum(results)
+
