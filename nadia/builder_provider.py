@@ -52,5 +52,6 @@ class BuilderProvider(object):
             'number': FloatBuilder,
             'integer': IntegerBuilder,
             'string': StringBuilder,
+            'boolean': BooleanBuilder,
             'object': ObjectBuilder,
             'array': ArrayBuilder})
