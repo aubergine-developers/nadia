@@ -11,6 +11,8 @@ class SchemaBuilder(object):
      Typically an instance of :py:class:`nadia.builder_provider.BuilderProvider`.
     """
 
+    combined_schemas = ("oneOf", "anyOf", "allOf")
+
     def __init__(self, builder_provider):
         self.builder_provider = builder_provider
 
@@ -54,7 +56,6 @@ class SchemaBuilder(object):
     @staticmethod
     def is_combined_schema(spec):
         """Check if provided schema specification is a combination of schemas."""
-        combined_schemas = ["oneOf", "anyOf", "allOf"]
         spec_keys = spec.keys()
 
-        return len(spec_keys) == 1 and not spec_keys.isdisjoint(combined_schemas)
+        return len(spec_keys) == 1 and not spec_keys.isdisjoint(SchemaBuilder.combined_schemas)

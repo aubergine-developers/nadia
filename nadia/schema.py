@@ -41,6 +41,4 @@ class NadiaCombinedSchema(object):
     @staticmethod
     def get_valid_count(val_results):
         """Check how many validated schemas are valid."""
-        results = [result == {} for result in val_results.values()]
-        return sum(results)
-
+        return sum(result == {} for result in val_results.values())
