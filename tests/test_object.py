@@ -5,7 +5,7 @@ from ddt import ddt, data
 from marshmallow import fields, Schema
 from nadia.object import ObjectBuilder
 from nadia.common import Builder
-from nadia.builder_provider import BuilderProvider
+from nadia.builder_mapping import BuilderMapping
 from nadia import primitives
 
 
@@ -13,7 +13,7 @@ from nadia import primitives
 class TestObjectBuilder(unittest.TestCase):
     """Test case for ObjectBuilder."""
 
-    provider = None
+    mapping = None
     properties = None
     required = None
 
@@ -24,7 +24,7 @@ class TestObjectBuilder(unittest.TestCase):
         int_mock.build_schema.return_value = fields.Int()
         str_mock = mock.Mock()
         str_mock.build_schema.return_value = fields.Str()
-        self.provider = BuilderProvider({'number': number_mock, 'integer': int_mock,
+        self.mapping = BuilderMapping({'number': number_mock, 'integer': int_mock,
                                          'string': str_mock})
         self.properties = {'x': {'type': 'number'},
                            'y': {'type': 'integer'},
@@ -33,15 +33,15 @@ class TestObjectBuilder(unittest.TestCase):
 
     def test_return_type(self):
         """Building schema with ObjectBuilder should return marshmallow.fields.Nested instance."""
-        provider = BuilderProvider({'number': mock.Mock(spec=Builder)})
+        mapping = BuilderMapping({'number': mock.Mock(spec=Builder)})
         obj_def = {'type': 'object', 'properties': {'num1': {'type': 'number'}}}
-        builder = ObjectBuilder(provider)
+        builder = ObjectBuilder(mapping)
         self.assertEqual(fields.Nested, type(builder.build_schema(obj_def)))
 
     def test_nullable(self):
         """Building schema for object type should correctly use nullable field."""
         obj_def = {'type': 'object', 'properties': self.properties}
-        builder = ObjectBuilder(self.provider)
+        builder = ObjectBuilder(self.mapping)
         for nullable in (True, False):
             obj_def['nullable'] = nullable
             self.assertEqual(nullable, builder.build_schema(obj_def).allow_none)
@@ -49,17 +49,17 @@ class TestObjectBuilder(unittest.TestCase):
     def test_required(self):
         """Building schema for object type should correctly use required field."""
         obj_def = {'type': 'object', 'properties': self.properties}
-        builder = ObjectBuilder(self.provider)
+        builder = ObjectBuilder(self.mapping)
         for required in (True, False):
             self.assertEqual(required, builder.build_schema(obj_def, required=required).required)
 
     def test_properties_building(self):
         """Constructing nested objects attributes should correctly call provided schema builders."""
         obj_def = {'type': 'object', 'properties': self.properties}
-        builder = ObjectBuilder(self.provider)
+        builder = ObjectBuilder(self.mapping)
         props_schemas = builder.construct_attributes_schemas(obj_def)
         for prop_name, prop in self.properties.items():
-            prop_builder = self.provider.get_builder(prop['type'])
+            prop_builder = self.mapping[prop['type']]
             prop_builder.build_schema.assert_called_once()
             self.assertEqual(props_schemas[prop_name], prop_builder.build_schema.return_value)
 
@@ -69,7 +69,7 @@ class TestObjectBuilder(unittest.TestCase):
     def test_build_schema(self, cas, cst, nested):
         """Constructing object schema should result in correct call chain."""
         obj_def = {'type': 'object', 'properties': self.properties}
-        builder = ObjectBuilder(self.provider)
+        builder = ObjectBuilder(self.mapping)
         schema = builder.build_schema(obj_def)
         cas.assert_called_once_with(obj_def)
         cst.assert_called_once_with(cas.return_value)
