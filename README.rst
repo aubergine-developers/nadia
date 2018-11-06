@@ -13,7 +13,7 @@ Basic usage
 
 
     import yaml
-    import nadia import build_schema
+    from nadia import build_schema
 
     with open('petstore.yaml') as petstore:        
         data = yaml.load(petstore)
