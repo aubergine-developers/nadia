@@ -34,7 +34,7 @@ class ObjectBuilder(Builder):
         attr_schemas = {}
         for prop_name, prop_content in properties.items():
             attr_type = prop_content['type']
-            attr_schemas_builder = self.builder_provider.get_builder(attr_type)
+            attr_schemas_builder = self.builder_mapping[attr_type]
             attr_required = prop_name in spec.get('required', [])
             attr_schemas[prop_name] = attr_schemas_builder.build_schema(
                 prop_content,

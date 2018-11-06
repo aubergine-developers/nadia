@@ -16,5 +16,5 @@ class ArrayBuilder(Builder):
         :rtype: :py:class:`marshmallow.fields.List`
         """
         item_body = spec['items']
-        item_builder = self.builder_provider.get_builder(item_body['type'])
+        item_builder = self.builder_mapping[item_body['type']]
         return fields.List(item_builder.build_schema(item_body), **self.translate_args(spec, **kwargs))
