@@ -28,8 +28,10 @@ class BuilderMapping(collections.Mapping):
                 logger.debug('Constructing builder for type %s.', typename)
                 self._cache[typename] = self.builder_factories[typename](self)
             except KeyError:
-                logger.error('Unknown type found in specs: %s', typename)
-                raise KeyError(f'Unknown type found in specs: {typename}.')
+                known_types = ', '.join(self.builder_factories.keys())
+                err_msg = f'Unknown type found in specs: {typename}. Available types: {known_types}'
+                logger.error(err_msg)
+                raise KeyError(err_msg)
         return self._cache[typename]
 
     def __iter__(self):
