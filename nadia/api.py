@@ -1,61 +1,39 @@
 """The nadia public api."""
 from uuid import uuid4
-from nadia.builder_provider import BuilderProvider
+from nadia.builder_mapping import BuilderMapping
 from nadia.schema import NadiaSchema, NadiaCombinedSchema
 
 
-class SchemaBuilder(object):
-    """Class used for building schemas from given specification dict.
+def build_schema(spec, builder_mapping=BuilderMapping()):
+    """Build schema from given OpenAPI specification.
 
-    :param builder_provider: an object providing builders via get_builder method.
-     Typically an instance of :py:class:`nadia.builder_provider.BuilderProvider`.
+    :param spec: mapping with OpenAPI specification
+    :type spec: Mapping[string, Any]
+    :param builder_mapping: a mapping typename -> factory, used to create builders
+     for specific types. Every value (factory) should be a callable accepting
+     builder_mapping as an argument and producing builder object.
+    :type builder_mapping: Mapping[string, Callable]
+    :returns: marshmallow schema constructed for given specification.
+    :rtype: :py:class:`marshmallow.Schema`
     """
 
     combined_schemas = ("oneOf", "anyOf", "allOf")
 
-    def __init__(self, builder_provider):
-        self.builder_provider = builder_provider
+    if is_combined_schema(spec):
+        combination = list(spec.keys())[0]
+        specs = spec[combination]
+        schemas = {schema[0]: self.build(schema[1]) for schema in specs.items()}
+        attrs = {'content': schemas, 'combination': combination}
+        return type('Object' + str(uuid4()), (NadiaCombinedSchema, ), attrs)
 
-    def build(self, spec):
-        """Build schema from given specification dict.
+    else:
+        content_builder = builder_mapping[spec.get('type', 'object')]
+        attrs = {'content':  content_builder.build_schema(spec)}
+        return type('Object' + str(uuid4()), (NadiaSchema, ), attrs)()   
+  
 
-        :param spec: a dictionary containing specification of the object for which
-         Schema should be build.
-        :type spec: dict
-        :return: Schema corresponding to the object defined by spec
-        :rtype: :py:class:`marshmallow.Schema`
-        """
+def is_combined_schema(spec):
+    """Check if provided schema specification is a combination of schemas."""
+    spec_keys = spec.keys()
 
-        if self.is_combined_schema(spec):
-            combination = list(spec.keys())[0]
-            specs = spec[combination]
-            schemas = {schema[0]: self.build(schema[1]) for schema in specs.items()}
-            attrs = {'content': schemas, 'combination': combination}
-            return type('Object' + str(uuid4()), (NadiaCombinedSchema, ), attrs)
-
-        else:
-            content_builder = self.builder_provider.get_builder(spec.get('type', 'object'))
-            attrs = {'content':  content_builder.build_schema(spec)}
-            return type('Object' + str(uuid4()), (NadiaSchema, ), attrs)()
-
-    @staticmethod
-    def create():
-        """Create SchemaBuilder.
-
-        :rtype: :py:class:`nadia.api.SchemaBuilder`
-
-        .. note:: This method is designed to be further extended as a factory method.
-           Later it should be able to accept some parameters governing creation of the
-           SchemaBuilder. Currently it creates :py:class:`nadia.api.SchemaBuilder`
-           by passing default instance of :py:class:`nadia.builder_provider.BulderProvider`
-           to initializer.
-        """
-        provider = BuilderProvider.get_default()
-        return SchemaBuilder(provider)
-
-    @staticmethod
-    def is_combined_schema(spec):
-        """Check if provided schema specification is a combination of schemas."""
-        spec_keys = spec.keys()
-
-        return len(spec_keys) == 1 and not spec_keys.isdisjoint(SchemaBuilder.combined_schemas)
+    return len(spec_keys) == 1 and not spec_keys.isdisjoint(SchemaBuilder.combined_schemas)
