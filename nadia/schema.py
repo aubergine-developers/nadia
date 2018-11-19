@@ -24,11 +24,12 @@ class NadiaCombinedSchema(object):
     def validate(cls, data):
         """Validate a combination of schemas."""
         validation_results = {}
+        
         for name, schema in cls.content.items():
             validation_results[name] = schema.validate(data)
 
         valid_count = cls.get_valid_count(validation_results)
-
+        
         if cls.combination == "anyOf" and valid_count > 0:
             return {}
         elif cls.combination == "oneOf" and valid_count == 1:

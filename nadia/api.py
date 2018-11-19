@@ -4,6 +4,9 @@ from nadia.builder_mapping import BuilderMapping
 from nadia.schema import NadiaSchema, NadiaCombinedSchema
 
 
+COMBINED_SCHEMAS = ("oneOf", "anyOf", "allOf")
+
+
 def build_schema(spec, builder_mapping=BuilderMapping()):
     """Build schema from given OpenAPI specification.
 
@@ -17,12 +20,11 @@ def build_schema(spec, builder_mapping=BuilderMapping()):
     :rtype: :py:class:`marshmallow.Schema`
     """
 
-    combined_schemas = ("oneOf", "anyOf", "allOf")
 
     if is_combined_schema(spec):
         combination = list(spec.keys())[0]
         specs = spec[combination]
-        schemas = {schema[0]: self.build(schema[1]) for schema in specs.items()}
+        schemas = {f"schema_{i}": build_schema(schema) for i, schema in enumerate(specs)}
         attrs = {'content': schemas, 'combination': combination}
         return type('Object' + str(uuid4()), (NadiaCombinedSchema, ), attrs)
 
@@ -34,6 +36,7 @@ def build_schema(spec, builder_mapping=BuilderMapping()):
 
 def is_combined_schema(spec):
     """Check if provided schema specification is a combination of schemas."""
+    
     spec_keys = spec.keys()
-
-    return len(spec_keys) == 1 and not spec_keys.isdisjoint(SchemaBuilder.combined_schemas)
+    
+    return len(spec_keys) == 1 and not spec_keys.isdisjoint(COMBINED_SCHEMAS)
