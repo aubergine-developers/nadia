@@ -13,13 +13,12 @@ Basic usage
 
 
     import yaml
-    import nadia.api
+    from nadia import build_schema
 
     with open('petstore.yaml') as petstore:        
         data = yaml.load(petstore)
         
-    builder = nadia.api.SchemaBuilder.create()
-    schema = builder.build(data['components']['schemas']['Pet'])
+    schema = build_schema(data['components']['schemas']['Pet'])
 
     valid_pet = {'id': 100, 'name': 'Doggo', 'tag': 'sometag'}
     invalid_pet = {'id': 'foo', 'name': 'Lessie', 'tag': ['tag1', 'tag2']}

@@ -11,8 +11,8 @@ class Builder(ABC):
     key = None
     marshmallow_class = None
 
-    def __init__(self, builder_provider):
-        self.builder_provider = builder_provider
+    def __init__(self, builder_mapping):
+        self.builder_mapping = builder_mapping
 
     @staticmethod
     def translate_args(spec, **kwargs):
