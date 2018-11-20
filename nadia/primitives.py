@@ -44,3 +44,11 @@ class StringBuilder(PrimitiveBuilder):
     """
     key = 'string'
     marshmallow_class = fields.String
+
+class BooleanBuilder(PrimitiveBuilder):
+    """Boolean schema builder.
+
+    This builder is designed for constructing schemas for OpenAPI 'boolean' type.
+    """
+    key = 'boolean'
+    marshmallow_class = fields.Boolean

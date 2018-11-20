@@ -3,7 +3,7 @@ import collections
 import logging
 from nadia.array import ArrayBuilder
 from nadia.object import ObjectBuilder
-from nadia.primitives import FloatBuilder, IntegerBuilder, StringBuilder
+from nadia.primitives import FloatBuilder, IntegerBuilder, StringBuilder, BooleanBuilder
 
 
 class BuilderMapping(collections.Mapping):
@@ -12,6 +12,7 @@ class BuilderMapping(collections.Mapping):
     builder_factories = {
         'number': FloatBuilder,
         'integer': IntegerBuilder,
+        'boolean': BooleanBuilder,
         'string': StringBuilder,
         'object': ObjectBuilder,
         'array': ArrayBuilder}
