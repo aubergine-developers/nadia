@@ -17,19 +17,19 @@ class NadiaSchema(Schema):
             raise ValidationError('Unknown field', unknown)
 
 
-class NadiaCombinedSchema(object):
+class NadiaCombinedSchema():
     """Class used to process combined schemas, using anyOf, allOf and oneOf."""
 
     @classmethod
     def validate(cls, data):
         """Validate a combination of schemas."""
         validation_results = {}
-        
+
         for name, schema in cls.content.items():
             validation_results[name] = schema.validate(data)
 
         valid_count = cls.get_valid_count(validation_results)
-        
+
         if cls.combination == "anyOf" and valid_count > 0:
             return {}
         elif cls.combination == "oneOf" and valid_count == 1:

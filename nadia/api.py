@@ -31,12 +31,12 @@ def build_schema(spec, builder_mapping=BuilderMapping()):
     else:
         content_builder = builder_mapping[spec.get('type', 'object')]
         attrs = {'content':  content_builder.build_schema(spec)}
-        return type('Object' + str(uuid4()), (NadiaSchema, ), attrs)()   
-  
+        return type('Object' + str(uuid4()), (NadiaSchema, ), attrs)()
+
 
 def is_combined_schema(spec):
     """Check if provided schema specification is a combination of schemas."""
-    
+
     spec_keys = spec.keys()
-    
+
     return len(spec_keys) == 1 and not spec_keys.isdisjoint(COMBINED_SCHEMAS)
