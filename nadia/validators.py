@@ -2,14 +2,15 @@
 from marshmallow.validate import ValidationError
 from operator import gt, lt, ge, le
 
-class ExtendedRange:
-    """Validator checking if number lies in the given interval, possibly with exclusive endpoints.
+def extended_range(min_value=None, max_value=None, exclusive_min=False, exclusive_max=False):
+    """Create validator checking if number lies in the given interval.
 
-    :param min: lower end of the interval. If `None` given, lower end will not be checked on
+    :param min_value: lower end of the interval. If `None` given, lower end will not be checked on
      validation. This would result in the target interval being (-inf, max) or (-inf, max].
-    :type min: number
-    :param max: upper end of the interval. If `None` given, upper end will not be checked on
+    :type min_value: number
+    :param max_value: upper end of the interval. If `None` given, upper end will not be checked on
      validation.
+    :type min_value: number
     :param exclusive_min: if the lower end of the interval should be exclusive. If yes,
      < comparison will be used, otherwise the comparison operator is <=.
     :type exclusive_min: bool
@@ -17,37 +18,36 @@ class ExtendedRange:
     :type exclusive_max: bool
     :raises ValueError: if both `min` and `max` are `None`
     """
-    def __init__(self, min=None, max=None, exclusive_min=False, exclusive_max=False):
-        if min is None and max is None:
-            raise ValueError('You need to provide min or max to construct ExtendedRange.')
+    if min_value is None and max_value is None:
+        raise ValueError('You need to provide min or max to construct ExtendedRange.')
 
-        self.lesser_op = le if exclusive_min else lt
-        self.greater_op = ge if exclusive_max else gt
-        self.min = min
-        self.max = max
+    lesser_op = le if exclusive_min else lt
+    greater_op = ge if exclusive_max else gt
 
-        if self.min is not None and self.max is None:
-            relation_str = f'> {min}' if exclusive_min else f'>= {min}'
-        elif self.min is None:
-            relation_str = f'< {max}' if exclusive_max else f'<= {max}'
-        else:
-            left = '(' if exclusive_min else '['
-            right = ')' if exclusive_max else ']'
-            relation_str = f'in the interval {left}{min}, {max}{right}'
+    if min_value is not None and max_value is None:
+        relation_str = f'> {min_value}' if exclusive_min else f'>= {min_value}'
+    elif min_value is None:
+        relation_str = f'< {max_value}' if exclusive_max else f'<= {max_value}'
+    else:
+        left = '(' if exclusive_min else '['
+        right = ')' if exclusive_max else ']'
+        relation_str = f'in the interval {left}{min_value}, {max_value}{right}'
 
-        self.error_message = f'Value must be {relation_str}.'
+    error_message = f'Value must be {relation_str}.'
 
-    def __call__(self, value):
-        if self.min is not None and self.lesser_op(value, self.min):
-            raise ValidationError(self.error_message)
+    def _validate(value):
+        if min_value is not None and lesser_op(value, min_value):
+            raise ValidationError(error_message)
 
-        if self.max is not None and self.greater_op(value, self.max):
-            raise ValidationError(self.error_message)
+        if max_value is not None and greater_op(value, max_value):
+            raise ValidationError(error_message)
 
         return value
 
-class CollectionSizeRange:
-    """Validator checking if number of items in the collection lies in the given range.
+    return _validate
+
+def collection_size_range(min_size=None, max_size=None):
+    """Create validator checking if number of items in the collection lies in the given range.
 
     :param min: minimum number of items. If `None` given, number of items is not bounded
      from below.
@@ -57,27 +57,25 @@ class CollectionSizeRange:
     :type max: int
     :raises ValueError: if both `min` and `max` are `None`
     """
-    def __init__(self, min_size=None, max_size=None):
-        if min is None and max is None:
-            raise ValueError('You need to provide min or max to construct ExtendedRange.')
+    if min_size is None and max_size is None:
+        raise ValueError('You need to provide min or max to construct ExtendedRange.')
 
-        self.min_size = min_size
-        self.max_size = max_size
+    if min_size is not None and max_size is None:
+        relation_str = f'>= {min_size}'
+    elif min_size is None:
+        relation_str = f'<= {max_size}'
+    else:
+        relation_str = f'between {min_size} and {max_size}'
 
-        if self.min_size is not None and self.max_size is None:
-            relation_str = f'>= {min_size}'
-        elif self.min_size is None:
-            relation_str = f'<= {max_size}'
-        else:
-            relation_str = f'between {min_size} and {max_size}'
+    error_message = f'Number of items must be {relation_str}.'
 
-        self.error_message = f'Number of items must be {relation_str}.'
+    def _validate(collection):
+        if min_size is not None and len(collection) < min_size:
+            raise ValidationError(error_message)
 
-    def __call__(self, collection):
-        if self.min_size is not None and len(collection) < self.min_size:
-            raise ValidationError(self.error_message)
-
-        if self.max_size is not None and len(collection) > self.max_size:
-            raise ValidationError(self.error_message)
+        if max_size is not None and len(collection) > max_size:
+            raise ValidationError(error_message)
 
         return collection
+
+    return _validate
