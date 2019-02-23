@@ -45,3 +45,39 @@ class ExtendedRange:
             raise ValidationError(self.error_message)
 
         return value
+
+class CollectionSizeRange:
+    """Validator checking if number of items in the collection lies in the given range.
+
+    :param min: minimum number of items. If `None` given, number of items is not bounded
+     from below.
+    :type min: int
+    :param max: maximum number of items. If `None` given, number of items is not bounded
+     from above.
+    :type max: int
+    :raises ValueError: if both `min` and `max` are `None`
+    """
+    def __init__(self, min_size=None, max_size=None):
+        if min is None and max is None:
+            raise ValueError('You need to provide min or max to construct ExtendedRange.')
+
+        self.min_size = min_size
+        self.max_size = max_size
+
+        if self.min_size is not None and self.max_size is None:
+            relation_str = f'>= {min_size}'
+        elif self.min_size is None:
+            relation_str = f'<= {max_size}'
+        else:
+            relation_str = f'between {min_size} and {max_size}'
+
+        self.error_message = f'Number of items must be {relation_str}.'
+
+    def __call__(self, collection):
+        if self.min_size is not None and len(collection) < self.min_size:
+            raise ValidationError(self.error_message)
+
+        if self.max_size is not None and len(collection) > self.max_size:
+            raise ValidationError(self.error_message)
+
+        return collection
