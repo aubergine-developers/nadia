@@ -1,6 +1,7 @@
 """Custom validators for use with nadia."""
-from marshmallow.validate import ValidationError
 from operator import gt, lt, ge, le
+from marshmallow.validate import ValidationError
+
 
 def extended_range(min_value=None, max_value=None, exclusive_min=False, exclusive_max=False):
     """Create validator checking if number lies in the given interval.
