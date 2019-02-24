@@ -79,3 +79,27 @@ def collection_size_range(min_size=None, max_size=None):
         return collection
 
     return _validate
+
+def unique_items(sequence):
+    """Validator returning boolean value indicating if sequence contains unique elements.
+
+    :param sequence: sequence of elements to validate.
+    :type sequence: sequence of arbitrary objects.
+    :returns: sequence
+    :raises ValidationError: if elements in the sequence are not unique.
+
+    .. note::
+       This validators works efficiently only in case sequence contains hashable elements.
+       If this is not the case, it resorts to pairwise comparisons, which is O(len(sequence)**2).
+    """
+    try:
+        if len(sequence) != len(set(sequence)):
+            raise ValidationError('Elements are not unique.')
+    # If it turns out sequence contains nonhashable objects, we need to resort to
+    # naive pairwise comparison.
+    except TypeError:
+        for i in range(len(sequence)):
+            for j in range(i+1, len(sequence)):
+                if sequence[i] == sequence[j]:
+                    raise ValidationError('Elements are not unique.')
+    return sequence
