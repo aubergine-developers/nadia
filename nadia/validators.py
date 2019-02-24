@@ -98,7 +98,7 @@ def unique_items(sequence):
     # If it turns out sequence contains nonhashable objects, we need to resort to
     # naive pairwise comparison.
     except TypeError:
-        for i in range(len(sequence)):
+        for i in range(len(sequence)): # pylint: disable=consider-using-enumerate
             for j in range(i+1, len(sequence)):
                 if sequence[i] == sequence[j]:
                     raise ValidationError('Elements are not unique.')
