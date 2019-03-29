@@ -1,4 +1,4 @@
-"""Test cases for nadia.validators.CollectionSizeRange"""
+"""Test cases for nadia.validators.collection_size_range"""
 from marshmallow.validate import ValidationError
 import pytest
 from nadia.validators import collection_size_range

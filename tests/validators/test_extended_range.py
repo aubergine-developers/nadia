@@ -1,4 +1,4 @@
-"""Test cases for nadia.validators.The extended_range"""
+"""Test cases for nadia.validators.extended_range"""
 from marshmallow.validate import ValidationError
 import pytest
 from nadia.validators import extended_range
@@ -35,7 +35,7 @@ def test_accepts_maximum(value, max_value, exclusive):
      [105, 100, 105, True, False],
      [105, 100, 105, False, False]])
 def test_accepts_range(value, min_value, max_value, exclusive_min, exclusive_max):
-    """The extended_range should accept correct values in maximum+mininumt setup."""
+    """The extended_range should accept correct values in minimum + maximum setup."""
     validate = extended_range(
         min_value=min_value,
         max_value=max_value,
