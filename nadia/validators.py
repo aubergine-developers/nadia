@@ -6,11 +6,11 @@ from marshmallow.validate import ValidationError
 def extended_range(min_value=None, max_value=None, exclusive_min=False, exclusive_max=False):
     """Create validator checking if number lies in the given interval.
 
-    :param min_value: lower end of the interval. If `None` given, lower end will not be checked on
-     validation. This would result in the target interval being (-inf, max) or (-inf, max].
+    :param min_value: lower end of the interval. If `None` given, the target interval will be
+     (-inf, max) or (-inf, max].
     :type min_value: number
-    :param max_value: upper end of the interval. If `None` given, upper end will not be checked on
-     validation.
+    :param max_value: upper end of the interval. If `None` given, the target interval will be
+     (min, inf) or [min, inf).
     :type min_value: number
     :param exclusive_min: if the lower end of the interval should be exclusive. If yes,
      < comparison will be used, otherwise the comparison operator is <=.
