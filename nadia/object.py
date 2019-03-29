@@ -17,6 +17,7 @@ class ObjectBuilder(Builder):
         :rtype: :py:class:`marshmallow.Schema`
         """
         attrs = self.construct_attributes_schemas(spec)
+        attrs['additional_properties'] = spec.get('additionalProperties', True)
         obj_schema = self.create_schema_type(attrs)
         return fields.Nested(obj_schema, **self.translate_args(spec, **kwargs))
 
