@@ -21,7 +21,7 @@ setup(
     long_description=LONG_DESCRIPTION,
     platforms=["Linux", "Unix"],
     setup_requires=['setuptools_scm', 'pytest-runner'],
-    install_requires=['marshmallow', 'pyaml'],
+    install_requires=['marshmallow==2.18.0', 'pyaml'],
     tests_require=['marshmallow', 'pyaml', 'ddt', 'pytest'],
     author='Konrad Jałowiecki <dexter2206@gmail.com>, Magdalena Nowak',
     author_email='dexter2206@gmail.com',
