@@ -30,7 +30,7 @@ def build_schema(spec, builder_mapping=BuilderMapping()):
 
     else:
         content_builder = builder_mapping[spec.get('type', 'object')]
-        attrs = {'content':  content_builder.build_schema(spec)}
+        attrs = {'content':  content_builder.build_schema(spec), 'additional_properties': False}
         return type('Object' + str(uuid4()), (NadiaSchema, ), attrs)()
 
 

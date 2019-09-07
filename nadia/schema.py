@@ -12,9 +12,10 @@ class NadiaSchema(Schema):
         This validator is taken from the the official recipe located at:
         http://marshmallow.readthedocs.io/en/latest/extending.html#validating-original-input-data
         """
-        unknown = set(original_data) - set(self.fields)
-        if unknown:
-            raise ValidationError('Unknown field', unknown)
+        if not self.additional_properties:
+            unknown = set(original_data) - set(self.fields)
+            if unknown:
+                raise ValidationError('Unknown field', unknown)
 
 
 class NadiaCombinedSchema():
