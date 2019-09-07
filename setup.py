@@ -22,7 +22,7 @@ setup(
     platforms=["Linux", "Unix"],
     setup_requires=['setuptools_scm'],
     install_requires=['marshmallow', 'pyaml'],
-    tests_require=['marshmallow', 'pyaml', 'ddt'],
+    tests_require=['marshmallow', 'pyaml', 'ddt', 'pytest-runner'],
     author='Konrad Jałowiecki <dexter2206@gmail.com>, Magdalena Nowak',
     author_email='dexter2206@gmail.com',
     packages=find_packages(exclude=["tests", "tests.*"]),
